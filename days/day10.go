@@ -22,7 +22,7 @@ func d10print_map(matrix [][]rune, k Key) {
     // fmt.Printf("%d,%d\n",len(matrix), len(matrix[0]))
 }
 
-var directions = [][]int{
+var direct= [][]int{
     {-1, 0}, // Up
     {0, 1}, // Right
     {1, 0},// Down
@@ -60,7 +60,7 @@ func d10traverse(curr rune, i, j int, matrix [][]rune, vis map[Key]bool) int {
 
     // Traverse to adjacent neighbors
     count := 0
-    for _, dir := range directions {
+    for _, dir := range direct{
         newX, newY := i+dir[0], j+dir[1]
         if newX >= 0 && newX < m && newY >= 0 && newY < n && matrix[newX][newY] == curr+1 {
             count += d10traverse(curr+1, newX, newY, matrix, vis)
