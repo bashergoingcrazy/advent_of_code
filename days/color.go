@@ -38,6 +38,14 @@ func Color(input interface{}, color ...string) string {
 		s = c + strings.Join(v, ", ") + Reset
 	case string:
 		s = c + v + Reset
+    case rune:
+        carr := []rune(c)
+        carr = append(carr, v)
+        s = string(carr)
+    case byte:
+        barr := []byte(c)
+        barr = append(barr, v)
+        s = string(barr)
         
 	default:
 		fmt.Printf("Unsupported type provided to Color func - %T\n", v)

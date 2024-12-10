@@ -6,7 +6,14 @@ import (
 	"strings"
 )
 
-func d10print_map(matrix [][]rune, k Key) {
+func d10print_map(matrix [][]rune, karr ...Key){
+    var k Key
+    if len(karr) >=1 {
+        k = karr[0]
+    } else {
+        k = Key{-1,-1, 'c'}
+    }
+    
     for i, row := range matrix {
         for j, val := range row {
             if i==k.x && j==k.y {
@@ -89,7 +96,7 @@ func d10parse_input(data string) [][]rune {
 
 
 func Day10(){
-    d, err := os.ReadFile("inputs/data10.txt")
+    d, err := os.ReadFile("inputs/data10dummy.txt")
     if err != nil {
         fmt.Println("Error reading the file: ",err)
         return
@@ -107,6 +114,6 @@ func Day10(){
             }
         }
     }
-    d10print_map(matrix, Key{0,0,'0'})
+    d10print_map(matrix)
     fmt.Println(Color(totalCount ))
 }
