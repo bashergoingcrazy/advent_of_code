@@ -8,3 +8,4 @@ This is specially for 2024 where I am trying to learn a new language (Go)
 - Quite easy to get into in my opinion
 - I am knee deep just topics on go coroutines and concurency are left to study
 - I can't currently apply the go coroutines or can I?
+- I love the concept of runes and not dealing with just 256 ascii characters 
