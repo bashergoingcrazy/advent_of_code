@@ -30,11 +30,11 @@ type Pair struct {
     x, y int
 }
 
-const N int = 12
+const NN int = 12
 const M int = 50
 
 func d8_is_valid_pair_dummy(p Pair)bool {
-    if p.x >= 0 && p.x < N && p.y >= 0 && p.y < N {
+    if p.x >= 0 && p.x < NN && p.y >= 0 && p.y < NN {
         return true
     }
     return false
