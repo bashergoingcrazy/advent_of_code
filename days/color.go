@@ -1,8 +1,9 @@
 package days
+
 import (
-    "strconv"
-    "strings"
-    "fmt"
+	"fmt"
+	"strconv"
+	"strings"
 )
 
 var (
@@ -18,7 +19,7 @@ var (
 	Gray      = "\033[37m"
 	White     = "\033[97m"
 	Bold      = "\033[1m"
-        Italic    = "\033[3m"
+	Italic    = "\033[3m"
 	Underline = "\033[4m"
 	Invert    = "\033[7m"
 )
@@ -38,15 +39,15 @@ func Color(input interface{}, color ...string) string {
 		s = c + strings.Join(v, ", ") + Reset
 	case string:
 		s = c + v + Reset
-    case rune:
-        carr := []rune(c)
-        carr = append(carr, v)
-        s = string(carr)
-    case byte:
-        barr := []byte(c)
-        barr = append(barr, v)
-        s = string(barr)
-        
+	case rune:
+		carr := []rune(c)
+		carr = append(carr, v)
+		s = string(carr)
+	case byte:
+		barr := []byte(c)
+		barr = append(barr, v)
+		s = string(barr)
+
 	default:
 		fmt.Printf("Unsupported type provided to Color func - %T\n", v)
 	}
