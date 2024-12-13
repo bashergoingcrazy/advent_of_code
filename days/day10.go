@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+    "github.com/bashergoingcrazy/goviz/color"
 )
 
 func d10print_map(matrix [][]rune, karr ...Key) {
@@ -18,7 +19,7 @@ func d10print_map(matrix [][]rune, karr ...Key) {
 		for j, val := range row {
 			if i == k.x && j == k.y {
 				s := string(val)
-				fmt.Printf(Color(s, Red))
+				fmt.Printf(color.Color(s, color.Red))
 				fmt.Printf(" ")
 			} else {
 				fmt.Printf("%c ", val)
@@ -112,6 +113,6 @@ func Day10() {
 			}
 		}
 	}
-	d10print_map(matrix)
-	fmt.Println(Color(totalCount))
+	d10print_map(matrix, Key{0,0,'a'})
+	fmt.Println(color.Color(totalCount))
 }

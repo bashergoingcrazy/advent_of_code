@@ -4,6 +4,7 @@ import (
 	"advent_of_code/days"
 	"fmt"
 	"os"
+	"github.com/bashergoingcrazy/goviz"
 )
 
 func main() {
@@ -43,4 +44,5 @@ func main() {
 	default:
 		fmt.Println("Day not yet implemented !!")
 	}
+    goviz.Render()
 }
