@@ -38,6 +38,8 @@ func main() {
         days.Day11()
     case "12":
         days.Day12()
+    case "13":
+        days.Day13()
 	default:
 		fmt.Println("Day not yet implemented !!")
 	}
