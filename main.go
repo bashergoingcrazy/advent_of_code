@@ -4,7 +4,6 @@ import (
 	"advent_of_code/days"
 	"fmt"
 	"os"
-	"github.com/bashergoingcrazy/goviz"
 )
 
 func main() {
@@ -41,8 +40,9 @@ func main() {
 		days.Day12()
 	case "13":
 		days.Day13()
+    case "14":
+        days.Day14()
 	default:
 		fmt.Println("Day not yet implemented !!")
 	}
-    goviz.Render()
 }
