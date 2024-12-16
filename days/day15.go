@@ -2,11 +2,13 @@ package days
 
 import (
 	"fmt"
+	"image/color"
 	"os"
 	"slices"
 	"strings"
-    "github.com/fogleman/gg"
-    "image/color"
+	"time"
+
+	"github.com/fogleman/gg"
 )
 
 var frameCounter int = 0
@@ -40,7 +42,7 @@ func saveFrame(matrix [][]rune) {
 	}
 
 	// Save the frame to a PNG file
-	filename := fmt.Sprintf("frames/frame_%04d.png", frameCounter)
+	filename := fmt.Sprintf("frames/frame_%05d.png", frameCounter)
 	dc.SavePNG(filename)
 	frameCounter++
 }
@@ -201,7 +203,7 @@ func move2(matrix [][]rune, m string) {
         case 'v':
             ad = dir[3] 
         }
-        saveFrame(matrix)
+        // saveFrame(matrix)
 
         // if it is a simple empty move make it 
         if matrix[z.x+ad.x][z.y + ad.y] == '.' {
@@ -270,7 +272,7 @@ func move2(matrix [][]rune, m string) {
         matrix[z.x][z.y] = '@'
     
     }
-    d15_print_matrix(matrix)
+    // d15_print_matrix(matrix)
 }
 
 func bfsd15(b,ad Pair, matrix [][]rune) (bool, []Pair){
@@ -331,12 +333,16 @@ func Day15() {
     // count := GpsSum(matrix)
     // fmt.Println("Count:",count)
 
+    t := time.Now()
     // solution for part 2
     matrix2 := to_matrix2(boardString)
-    d15_print_matrix(matrix2)
+    // d15_print_matrix(matrix2)
     move2(matrix2, movements)
     count2 := GpsSum(matrix2)
     fmt.Println(count2)
+    tf := time.Now()
+    elapsed := tf.Sub(t)
+    fmt.Println(elapsed)
 
 
 }
