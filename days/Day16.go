@@ -6,7 +6,6 @@ import (
 	"os"
 )
 
-
 type MazeNode struct {
     coord Pair
     cost int
@@ -22,7 +21,7 @@ func (pq MazeQueue) Less(i, j int)bool {
 }
 func (pq *MazeQueue) Push(x any) {
     node := x.(*MazeNode)
-    *pq = append(*pq, node)
+    *pq = append(*pq, node) 
 }
 func (pq *MazeQueue) Pop() any {
     old := *pq
@@ -76,22 +75,23 @@ func bfsa(matrix [][]rune) int {
     })
 
     fmt.Println(startState,goalState)
-    visited := make(map[Pair]struct{})
+    visited := make(map[string]struct{})
 
     for len(*pq) > 0 {
         currState := heap.Pop(pq).(*MazeNode)
 
-        if _, exists := visited[currState.coord]; exists {
+        key := fmt.Sprintf("%v,%d",currState.coord,abs(currState.direction.x))
+        if _, exists := visited[key]; exists {
             continue
         }
-        visited[currState.coord] = struct{}{}
+        visited[key] = struct{}{}
 
         if currState.coord.x == goalState.x &&
         currState.coord.y == goalState.y {
             return currState.cost
         }
 
-        
+    
         // matrix[currState.coord.x][currState.coord.y] = 'O'
         //
         // fmt.Println()
@@ -101,8 +101,8 @@ func bfsa(matrix [][]rune) int {
 
         // iterate over all directions and push for valid states
         for _, d := range dir {
-            
-            
+        
+        
             nextCord := Pair{d.x + currState.coord.x, d.y + currState.coord.y}
             if matrix[nextCord.x][nextCord.y] == '#' { continue }
 
@@ -122,11 +122,80 @@ func bfsa(matrix [][]rune) int {
             heap.Push(pq, nextNode)
         }
     }
-    
+
     return 0
 }
 
+var uniquePath map[Pair]struct{}
 
+func dfs(curState MazeNode,matrix[][]rune,visited map[string]struct{},goal Pair,  maxCost int, path []Pair) {
+    // prune condition
+    if curState.cost > maxCost {
+        return 
+    }
+    key := fmt.Sprintf("%v,%d",curState.coord, abs(curState.direction.x))
+    if _, exists := visited[key]; exists {
+        return
+    }
+    visited[key] = struct{}{}
+    // base case
+    // fmt.Println(curState)
+    // fmt.Scanln()
+    if curState.coord.x == goal.x && curState.coord.y == goal.y {
+        for _, px := range path {
+            uniquePath[px] = struct{}{}
+        }
+    }
+    // recursive case
+    dir := [4]Pair {
+        {0, 1},  // Right
+        {-1, 0}, // Top
+        {0, -1}, //Left
+        {1, 0}, // Bottom
+    }
+    for _, d := range dir {
+
+
+        nextCord := Pair{d.x + curState.coord.x, d.y + curState.coord.y}
+        if matrix[nextCord.x][nextCord.y] == '#' { continue }
+
+        extraCost := 0
+        if d.x != curState.direction.x ||
+        d.y != curState.direction.y {
+            extraCost += 1000 
+        }
+
+        nextNode := MazeNode{
+            coord: nextCord,
+            direction: d,
+            cost: 1 + extraCost + curState.cost,
+        }
+        // nextNode.minFactor = nextNode.cost + heuristic(nextCord, goalState)
+        path = append(path, nextCord)
+        old := path
+        n := len(old)
+        dfs(nextNode,matrix,visited,goal, maxCost, path)
+        path = old[0:n-1]     
+    }
+    delete(visited, key)
+}
+
+
+func part2(matrix [][]rune) {
+    startPos := findInMatrix(matrix, 'S')
+    goalPos := findInMatrix(matrix, 'E')
+    startState := MazeNode {
+        coord: startPos, 
+        cost: 0,
+        direction: Pair{0,1},
+        minFactor: 0,
+    }
+    path := []Pair{}
+    uniquePath = make(map[Pair]struct{})
+    visited := make(map[string]struct{})
+    dfs(startState, matrix, visited,goalPos, 102504,path)
+    fmt.Println(len(uniquePath)+1)
+}
 
 
 func Day16(){
@@ -141,6 +210,7 @@ func Day16(){
     d15_print_matrix(matrix)
     cost := bfsa(matrix)
     fmt.Println(cost)
+    // part2(matrix)
+    
 }
-// 102508
 
