@@ -48,7 +48,7 @@ func findInMatrix(matrix [][]rune, find rune)Pair {
     }
     return z
 }
-const h_mul int = 0 
+const h_mul int = 1 
 func heuristic(currState, goalState Pair) int {
     xval := abs(goalState.x - currState.x)
     yval := abs(goalState.y - currState.y)
