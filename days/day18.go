@@ -82,14 +82,91 @@ func firstPreventingByte(matrix [][]rune, ds []string) {
     }
 }
 
+
+ 
+// ---------------------- Dijsoint set data structure -------------------
+
+type disjointSet struct {
+    parent, rank []int
+}
+
+func init_dsj(n int) *disjointSet {
+    parent, rank := make([]int, n), make([]int, n)
+    for i := range parent {
+        parent[i] = i
+    }
+    return &disjointSet{parent: parent, rank: rank}
+}
+
+func (dsj *disjointSet) find(x int) int {
+    if dsj.parent[x] == x { return x }
+    dsj.parent[x] = dsj.find(dsj.parent[x])
+    return dsj.parent[x]
+}
+
+func (dsj *disjointSet) union(x,y int) {
+    xrep, yrep := dsj.find(x), dsj.find(y)
+    if xrep == yrep { return }
+    if dsj.rank[x] < dsj.rank[y] {
+        dsj.parent[xrep] = yrep
+    } else if dsj.rank[y] < dsj.rank[x] {
+        dsj.parent[yrep] = xrep
+    } else {
+        dsj.parent[yrep] = xrep
+        dsj.rank[xrep]++
+    }
+}
+// ------------------- End of Disjoint Set data structure ----------------
+
+func d18part2(matrix [][]rune, fallingPoints []string) {
+    m,n := len(matrix), len(matrix[0])
+    djs := init_dsj(m*n)
+    
+    // Initialize unions for walls without connecting (0,0) and (m-1,n-1)
+    for i := 1; i < m-1; i++ {
+        djs.union(i*n, (i+1)*n)                     // Connect adjacent left wall elements
+        djs.union((i-1)*n + n-1, i*n + n-1)         // Connect adjacent right wall elements
+    }
+    for j := 1; j < n-1; j++ {
+        djs.union(j, j+1)                           // Connect adjacent top wall elements
+        djs.union((m-1)*n+j-1, (m-1)*n+j)          // Connect adjacent bottom wall elements
+    }
+    // this is done is such a way that 
+    // 0,0 and m-1,n-1 are not added anywhere
+
+    // Process all the falling points
+    dir := [4]Pair{
+        {-1, 0}, {1, 0}, {0, 1}, {0, -1},
+    }
+
+    for i, points := range fallingPoints {
+        sl := strings.Split(points, ",")
+        x := parseInt(strings.TrimSpace(sl[1]))
+        y := parseInt(strings.TrimSpace(sl[0]))
+        for _, d := range dir {
+            nextP := Pair{d.x + x, d.y + y}
+            if nextP.x < 0 || nextP.x >= m || nextP.y < 0 || nextP.y >= n {
+                continue
+            }
+            djs.union(x*n + y, nextP.x*n + nextP.y)
+        }
+        // check if the conditions for closing has been met
+        xrep,yrep := djs.find(n-1), djs.find(n)
+        if xrep == yrep {
+            fmt.Println(fallingPoints[i])
+            break
+        }
+    }
+}
+
 func Day18() {
-    f, err := os.ReadFile("inputs/data18.txt")
+    f, err := os.ReadFile("inputs/data18dummy.txt")
     if err != nil {
         os.Exit(2)
     }
     data := strings.TrimSpace(string(f))
     // fmt.Println(data)
-    m,n := 71,71
+    m,n := 7,7
     matrix := make([][]rune,0,m)
     for i:=0; i<m; i++ {
         row := make([]rune, 0, n) 
@@ -101,14 +178,15 @@ func Day18() {
 
     ds := strings.Split(data, "\n")
     for i, row := range ds {
-        if i == 1024 {break}
+        if i == 12 {break}
         k := strings.Split(row, ",") 
         x := parseInt(k[1])
         y := parseInt(k[0])
         matrix[x][y]='#'
     }
     
-    // d15_print_matrix(matrix)
-    fmt.Println(bfs(matrix))
-    firstPreventingByte(matrix, ds)
+    d15_print_matrix(matrix)
+    d18part2(matrix, ds)
+    // fmt.Println(bfs(matrix))
+    // firstPreventingByte(matrix, ds)
 }

@@ -52,6 +52,8 @@ func main() {
         days.Day18()
     case "19":
         days.Day19()
+    case "20":
+        days.Day20()
 	default:
 		fmt.Println("Day not yet implemented !!")
 	}
