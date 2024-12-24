@@ -262,6 +262,7 @@ func swapped_wires_config(allGates []*Gate, allWires map[string]*Wire) {
             // hmt, and z18 have been swapped and confirmed by me
             // bfq, and z27 have been swapped and confirmed by me
             // hkh, and z31 have been swapped and confirmed by me
+            // bng, and fjp have been swapped and confirmed by me
                 
 
 
@@ -278,9 +279,6 @@ func swapped_wires_config(allGates []*Gate, allWires map[string]*Wire) {
             // }
         }
 
-
-        // done checking for xor discrepecies now will check for and
-        
 
     } 
 
@@ -305,6 +303,9 @@ func Day24(){
     res1 := topological_processing(allGates, allWires)
     fmt.Println(res1)
     swapped_wires_config(allGates, allWires)
+    // after debuggin the swapped_wires_config
+    // bfq,bng,fjp,hkh,hmt,z18,z27,z31 
+    // is the result for my input
 
     // a, o, x := 0, 0, 0
     // for _, v := range allGates {
