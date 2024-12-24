@@ -58,6 +58,8 @@ func main() {
         days.Day22()
     case "23":
         days.Day23()
+    case "24":
+        days.Day24()
 	default:
 		fmt.Println("Day not yet implemented !!")
 	}
